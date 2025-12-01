@@ -1,20 +1,609 @@
 import { useEffect, FC } from 'react';
-import './App.css';
 
-// Using a slightly different style to define the component to rule out any definition oddities
+// CSS content is now included as a string constant
+const AppStyles = `
+/*
+  Theme Variables & Global Reset
+*/
+:root {
+  --bg-0: #07090e;
+  --bg-1: #0b0f18;
+  --bg-2: #0e1422;
+  --text: #e6e7eb;
+  --muted: #9aa3b2;
+  --line: rgba(255, 255, 255, 0.06);
+  --card: rgba(255, 255, 255, 0.04);
+  --card-strong: rgba(255, 255, 255, 0.08);
+  --accent-1: #62f0c8;
+  --accent-2: #7b6cff;
+  --accent-3: #00c2ff;
+  --font-family: 'Inter', sans-serif;
+}
+
+/* Reset and Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  color: var(--text);
+  scroll-behavior: smooth;
+  background-color: var(--bg-0);
+}
+
+body {
+  /* Set initial background for systems with reduced motion */
+  background: linear-gradient(180deg, var(--bg-0), var(--bg-2) 60%, var(--bg-1));
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Base Typography */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+}
+
+p {
+  color: var(--muted);
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+a:hover {
+  color: var(--accent-1);
+}
+
+a.cta, button.cta {
+  background-color: var(--accent-1);
+  color: var(--bg-0);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+a.cta:hover, button.cta:hover {
+  background-color: var(--accent-1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(98, 240, 200, 0.3);
+  color: var(--bg-0); /* Keep text black on hover */
+}
+
+a.ghost {
+  background-color: transparent;
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+}
+
+a.ghost:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  padding: 80px 0;
+  position: relative;
+  z-index: 10; /* Ensures content is above the background glow */
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 60px 0;
+  }
+}
+
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px;
+  backdrop-filter: blur(5px);
+}
+
+.stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Grid Overlay (Visual Element) */
+.grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.15;
+  z-index: 1;
+}
+
+/* Header and Navigation */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--bg-0);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  background-color: var(--accent-1);
+  border-radius: 4px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-links a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--accent-1);
+}
+
+@media (max-width: 992px) {
+  .nav-links {
+    display: none; /* Hide main nav on smaller screens */
+  }
+}
+
+/* Hero Section */
+.hero {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-1);
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.eyebrow .sep {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.h1 {
+  margin-bottom: 24px;
+}
+
+.sub {
+  font-size: 1.25rem;
+  margin-bottom: 32px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background-color: var(--card-strong);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--line);
+}
+
+.badge .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-1);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Features Grid */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.features .card {
+  padding: 24px;
+}
+
+.features .card h3 {
+  margin: 12px 0 8px;
+  color: var(--accent-3);
+  font-size: 1.15rem;
+}
+
+.features .card .icon {
+  color: var(--accent-3);
+}
+
+.features .card p {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* Bot Card (Sidebar) */
+.bot-card {
+  background-color: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 80px; /* Stick below the header */
+}
+
+@media (max-width: 992px) {
+  .bot-card {
+    position: relative;
+    top: 0;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+.bot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bot-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bot-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bot-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bot-name {
+  font-weight: 600;
+}
+
+.bot-tag {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.bot-header .ghost {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.bot-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg {
+  background-color: var(--card-strong);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msg .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.msg .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-0);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-1);
+  border: 1px solid var(--line);
+}
+
+.msg .pill .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-1);
+}
+
+.msg .spread {
+  font-size: 0.9rem;
+}
+
+.msg .levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.msg .levels strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Feature Stack Section */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.section-title .icon {
+  color: var(--accent-1);
+}
+
+.title {
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.kicker {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.li-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-1);
+  stroke-width: 2;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.li strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.li span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-top: 40px;
+  background-color: var(--card);
+}
+
+@media (max-width: 600px) {
+  .foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+/* Footer */
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  background-color: var(--bg-1);
+  z-index: 10;
+  position: relative;
+}
+
+.f-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .f-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .f-grid .f-col:first-child {
+    grid-column: span 2;
+  }
+}
+
+.f-col h4 {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.f-col a {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.f-col a:hover {
+  color: var(--accent-1);
+}
+`;
+
+// Main App component
 const App: FC = function() {
   const currentYear = new Date().getFullYear();
+
+  // 1. useEffect for dynamically injecting CSS.
+  // This resolves the 'Could not resolve "./App.css"' error by combining the files.
+  useEffect(() => {
+    // Check if styles have already been injected to prevent duplication on re-render
+    if (!document.getElementById('app-styles')) {
+      const styleTag = document.createElement('style');
+      styleTag.id = 'app-styles';
+      styleTag.textContent = AppStyles;
+      document.head.appendChild(styleTag);
+    }
+  }, []); // Run only once on mount
+
+  // 2. useEffect hook to handle the subtle mouse-following background glow.
   useEffect(() => {
     const body = document.body;
-    let raf: number | null = null; 
+    let raf: number | null = null;
 
-    function move(e: globalThis.MouseEvent) { 
+    function move(e: globalThis.MouseEvent) {
+      // Calculate normalized cursor position (0-100%)
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
-      
+
       if (raf !== null) cancelAnimationFrame(raf);
-      
+
+      // Use requestAnimationFrame to smooth the background change
       raf = requestAnimationFrame(() => {
+        // Set the background using two radial gradients tied to cursor position,
+        // layered over a fixed linear gradient.
         body.style.background = `
           radial-gradient(1200px 600px at ${x}% ${y - 10}%, rgba(123,108,255,0.18), transparent 60%),
           radial-gradient(900px 500px at ${Math.max(0, x - 60)}% 30%, rgba(0,194,255,0.14), transparent 60%),
@@ -23,12 +612,14 @@ const App: FC = function() {
       });
     }
 
+    // Check for reduced motion preference for accessibility and performance
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    
+
     if (!media.matches) {
-      window.addEventListener('mousemove', move as EventListener); 
+      window.addEventListener('mousemove', move as EventListener);
     }
 
+    // Cleanup function: removes listener and cancels pending animation frame
     return () => {
       window.removeEventListener('mousemove', move as EventListener);
       if (raf !== null) cancelAnimationFrame(raf);
@@ -37,6 +628,7 @@ const App: FC = function() {
 
   return (
     <>
+      {/* Grid overlay for aesthetic background structure */}
       <div className="grid-overlay" aria-hidden="true"></div>
 
       <header>
