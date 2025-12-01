@@ -224,10 +224,14 @@ header {
   }
 }
 
-/* Hero Section */
+/* Hero Section - UPDATED CENTERING TO COVER FULL HEIGHT */
 .hero {
+  /* Use 100vh for full viewport height */
+  min-height: calc(100vh - 56px); /* 100vh minus a reasonable header height */
   padding-top: 100px;
   padding-bottom: 100px;
+  display: flex; /* Enable flexbox for vertical alignment */
+  align-items: center; /* Vertically center the content */
 }
 
 .hero-inner {
@@ -241,6 +245,12 @@ header {
   .hero-inner {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+  .hero {
+    /* Adjust for mobile to prevent content being too squished */
+    min-height: auto;
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
 }
 
