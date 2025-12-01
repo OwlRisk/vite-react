@@ -224,14 +224,20 @@ header {
   }
 }
 
-/* Hero Section - UPDATED CENTERING TO COVER FULL HEIGHT */
+/* Hero Section - UPDATED TO 100VH AND ABSOLUTELY CENTERED CONTENT */
 .hero {
-  /* Use 100vh for full viewport height */
-  min-height: calc(100vh - 56px); /* 100vh minus a reasonable header height */
-  padding-top: 100px;
-  padding-bottom: 100px;
-  display: flex; /* Enable flexbox for vertical alignment */
-  align-items: center; /* Vertically center the content */
+  /* Use strict height for perfect centering effect */
+  height: 100vh; 
+  width: 100%;
+  
+  /* Flexbox for centering the container */
+  display: flex; 
+  align-items: center; /* Vertical center */
+  justify-content: center; /* Horizontal center */
+  
+  /* Remove old padding to allow strict centering */
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .hero-inner {
@@ -239,18 +245,25 @@ header {
   grid-template-columns: 2fr 1fr;
   gap: 60px;
   align-items: start;
+  
+  /* Add margin to push content down past the typical sticky header height (approx 56px) */
+  margin-top: 56px; 
 }
 
 @media (max-width: 992px) {
   .hero-inner {
     grid-template-columns: 1fr;
     gap: 40px;
+    margin-top: 0; /* Remove margin on mobile where the layout is often fluid */
   }
   .hero {
-    /* Adjust for mobile to prevent content being too squished */
-    min-height: auto;
+    /* Revert to min-height/auto height on mobile to ensure content doesn't get cut off */
+    height: auto;
+    min-height: 100vh;
     padding-top: 60px;
     padding-bottom: 60px;
+    justify-content: start; /* Reset horizontal justification */
+    align-items: start; /* Reset vertical justification */
   }
 }
 
@@ -809,7 +822,8 @@ const App: FC = function() {
                   <div className="row">
                     <span className="pill">
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M3 13h4l2-7 4 16 2-9h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 4l6 2.5V12a7.5 7.5 0 0 1-6 7.3A7.5 7.5 0 0 1 6 12V6.5L12 4Z" stroke="currentColor" strokeWidth="1.6"/>
+                        <path d="M9.5 12.5l1.7 1.7 3.3-3.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                       Confidence: Medium
                     </span>
