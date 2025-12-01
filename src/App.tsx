@@ -27,21 +27,27 @@ const AppStyles = `
   padding: 0;
 }
 
+/* --- CRITICAL FULL HEIGHT FIX --- */
+/* Set height on both html and body to ensure the viewport height is properly propagated. */
 html {
   font-family: var(--font-family);
   color: var(--text);
   scroll-behavior: smooth;
   background-color: var(--bg-0);
+  height: 100%; /* Explicitly set height for inheritance */
 }
 
 body {
   /* Set initial background for systems with reduced motion */
   background: linear-gradient(180deg, var(--bg-0), var(--bg-2) 60%, var(--bg-1));
+  height: 100%; /* Explicitly set height */
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
   line-height: 1.6;
 }
+/* --- END CRITICAL FULL HEIGHT FIX --- */
+
 
 /* Base Typography */
 h1, h2, h3, h4 {
@@ -114,7 +120,8 @@ a.ghost:hover {
 
 /* Utility Classes */
 .container {
-  max-width: 1200px;
+  /* CHANGED: Set max-width to 100% to ensure it takes full width on all screens */
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   padding: 0 24px;
@@ -600,7 +607,6 @@ const App: FC = function() {
   const currentYear = new Date().getFullYear();
 
   // 1. useEffect for dynamically injecting CSS.
-  // This resolves the 'Could not resolve "./App.css"' error by combining the files.
   useEffect(() => {
     // Check if styles have already been injected to prevent duplication on re-render
     if (!document.getElementById('app-styles')) {
