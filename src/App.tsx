@@ -4,7 +4,6 @@ import './App.css';
 // Using a slightly different style to define the component to rule out any definition oddities
 const App: FC = function() {
   const currentYear = new Date().getFullYear();
-
   useEffect(() => {
     const body = document.body;
     let raf: number | null = null; 
