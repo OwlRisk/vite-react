@@ -4,6 +4,7 @@ import './App.css';
 const App: FC = () => {
   const currentYear = new Date().getFullYear();
 
+  // Line 8: useEffect hook
   useEffect(() => {
     const body = document.body;
     let raf: number | null = null; 
@@ -417,14 +418,4 @@ const App: FC = () => {
         </div>
 
         <div className="container" style={{ marginTop: '18px', color: 'var(--muted)', fontSize: '12.5px' }}>
-          <p style={{ margin: 0 }}>
-            Risk disclaimer: Trading digital assets involves significant risk and can result in the loss of your capital. Nothing here is financial advice. Syncrade does not accept deposits; support is available via Telegram Stars only.
-          </p>
-          <p style={{ margin: '8px 0 0' }}>© {currentYear} Syncrade. All rights reserved.</p>
-        </div>
-      </footer>
-    </>
-  );
-}
-
-export default App;
+          <p style
