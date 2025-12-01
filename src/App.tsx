@@ -34,14 +34,14 @@ html {
   color: var(--text);
   scroll-behavior: smooth;
   background-color: var(--bg-0);
-  height: 100%; /* Explicitly set height for inheritance */
+  /* Removed: height: 100%; */
 }
 
 body {
   /* Set initial background for systems with reduced motion */
   background: linear-gradient(180deg, var(--bg-0), var(--bg-2) 60%, var(--bg-1));
-  height: 100%; /* Explicitly set height */
-  min-height: 100vh;
+  /* Removed: height: 100%; */
+  /* Removed: min-height: 100vh; */
   position: relative;
   overflow-x: hidden;
   line-height: 1.6;
@@ -120,7 +120,7 @@ a.ghost:hover {
 
 /* Utility Classes */
 .container {
-  /* CHANGED: Set max-width to 100% to ensure it takes full width on all screens */
+  /* max-width is now 100% per previous request */
   max-width: 100%;
   width: 100%;
   margin: 0 auto;
@@ -231,10 +231,9 @@ header {
   }
 }
 
-/* Hero Section - UPDATED TO 100VH AND ABSOLUTELY CENTERED CONTENT */
+/* Hero Section - Removed fixed heights, now relying on content/padding */
 .hero {
-  /* Use strict height for perfect centering effect */
-  height: 100vh; 
+  /* Removed: height: 100vh; */
   width: 100%;
   
   /* Flexbox for centering the container */
@@ -242,9 +241,9 @@ header {
   align-items: center; /* Vertical center */
   justify-content: center; /* Horizontal center */
   
-  /* Remove old padding to allow strict centering */
-  padding-top: 0;
-  padding-bottom: 0;
+  /* Remove old padding to allow strict centering, but restore section padding for content flow */
+  padding-top: 80px; 
+  padding-bottom: 80px; 
 }
 
 .hero-inner {
@@ -264,9 +263,9 @@ header {
     margin-top: 0; /* Remove margin on mobile where the layout is often fluid */
   }
   .hero {
-    /* Revert to min-height/auto height on mobile to ensure content doesn't get cut off */
+    /* Revert to auto height on mobile */
     height: auto;
-    min-height: 100vh;
+    /* Removed: min-height: 100vh; */
     padding-top: 60px;
     padding-bottom: 60px;
     justify-content: start; /* Reset horizontal justification */
