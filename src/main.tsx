@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx'; // Note: You might need to change this to './App.tsx' if you convert the App component too.
+import App from './App.tsx'; // NOTE: Path updated to .tsx for consistency with TypeScript usage.
 import './index.css';
 
 // ----------------------------------------------------------------------
