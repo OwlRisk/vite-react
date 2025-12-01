@@ -1,17 +1,13 @@
 import { useEffect, FC } from 'react';
-import './App.css'; // Assuming App.css remains the same
+import './App.css';
 
-// Type the component as a Functional Component (FC)
 const App: FC = () => {
   const currentYear = new Date().getFullYear();
 
-  // useEffect to handle the subtle parallax glow following the cursor
   useEffect(() => {
     const body = document.body;
-    // Type raf as the return type of requestAnimationFrame (a number) or null
     let raf: number | null = null; 
 
-    // Explicitly type the event 'e' as a standard DOM MouseEvent
     function move(e: globalThis.MouseEvent) { 
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
@@ -19,7 +15,6 @@ const App: FC = () => {
       if (raf !== null) cancelAnimationFrame(raf);
       
       raf = requestAnimationFrame(() => {
-        // This updates the body background style to create the glow effect
         body.style.background = `
           radial-gradient(1200px 600px at ${x}% ${y - 10}%, rgba(123,108,255,0.18), transparent 60%),
           radial-gradient(900px 500px at ${Math.max(0, x - 60)}% 30%, rgba(0,194,255,0.14), transparent 60%),
@@ -31,16 +26,14 @@ const App: FC = () => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     
     if (!media.matches) {
-      // Cast the function to EventListener to satisfy the window.addEventListener signature
       window.addEventListener('mousemove', move as EventListener); 
     }
 
-    // Cleanup function: runs when the component unmounts
     return () => {
       window.removeEventListener('mousemove', move as EventListener);
       if (raf !== null) cancelAnimationFrame(raf);
     };
-  }, []); // Empty array ensures it runs only once on mount
+  }, []);
 
   return (
     <>
@@ -64,7 +57,6 @@ const App: FC = () => {
             <a href="https://t.me/syncrade" target="_blank" rel="noopener noreferrer">Community</a>
           </nav>
           <a className="cta" href="https://t.me/syncradebot" target="_blank" rel="noopener noreferrer" aria-label="Launch Syncrade Telegram Bot">
-            {/* Paper plane icon */}
             <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M21.8 3.2L2.7 10.5c-.9.35-.88 1.68.03 2l5.1 1.8 1.9 5.3c.32.88 1.53.92 1.97.06l2.9-5.46 5.2-9.79c.44-.83-.37-1.77-1.3-1.31Z" stroke="#0a0b10" strokeWidth="1.6" fill="white"/>
             </svg>
@@ -92,7 +84,6 @@ const App: FC = () => {
 
               <div className="badges">
                 <span className="badge" title="No deposits required">
-                  {/* Shield */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M12 3l7 3v5a9 9 0 0 1-7 8 9 9 0 0 1-7-8V6l7-3Z" stroke="currentColor" strokeWidth="1.6"/>
                     <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -100,14 +91,12 @@ const App: FC = () => {
                   No deposits
                 </span>
                 <span className="badge" title="Support via Telegram Stars">
-                  {/* Star */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M12 3.5l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.9 6.4 20.7l1.1-6.2L3 10.1l6.2-.9L12 3.5Z" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinejoin="round"/>
                   </svg>
                   Telegram Stars only
                 </span>
                 <span className="badge" title="Risk analytics">
-                  {/* Radar */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.6"/>
                     <path d="M12 12l6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
@@ -125,7 +114,6 @@ const App: FC = () => {
                   Launch Telegram Bot
                 </a>
                 <a className="ghost" href="https://t.me/syncrade" target="_blank" rel="noopener noreferrer">
-                  {/* People */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.6"/>
                     <path d="M3.5 18a5.5 5.5 0 0 1 11 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
@@ -135,7 +123,6 @@ const App: FC = () => {
                   Join Community
                 </a>
                 <a className="ghost" href="/blog">
-                  {/* Book */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M5 5.5a3 3 0 0 1 3-3h11v18H8a3 3 0 0 0-3 3V5.5Z" stroke="currentColor" strokeWidth="1.6"/>
                     <path d="M8 2.5v18" stroke="currentColor" strokeWidth="1.6"/>
@@ -146,7 +133,6 @@ const App: FC = () => {
 
               <div className="features" id="signals">
                 <div className="card">
-                  {/* Signal waves */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M2 12h3M19 12h3M6 12c2-4 10-4 12 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
                   </svg>
@@ -154,7 +140,6 @@ const App: FC = () => {
                   <p>Algorithmic trade signals with clear entry, levels, and risk context to keep you decisive.</p>
                 </div>
                 <div className="card" id="education">
-                  {/* Graduation cap */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M3 9l9-4 9 4-9 4-9-4Z" stroke="currentColor" strokeWidth="1.6"/>
                     <path d="M7 11v5c3 2 7 2 10 0v-5" stroke="currentColor" strokeWidth="1.6"/>
@@ -163,7 +148,6 @@ const App: FC = () => {
                   <p>Market structure, playbooks, and tutorials designed to turn signals into repeatable decisions.</p>
                 </div>
                 <div className="card" id="monitoring">
-                  {/* Eye */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" stroke="currentColor" strokeWidth="1.6"/>
                     <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6"/>
@@ -172,7 +156,6 @@ const App: FC = () => {
                   <p>Real-time market monitoring with alerts that surface meaningful moves, not noise.</p>
                 </div>
                 <div className="card" id="ratings">
-                  {/* Stars */}
                   <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M12 3.3l2.4 4.9 5.4.8-3.9 3.8.9 5.3L12 15.9 7.2 18.1l.9-5.3-3.9-3.8 5.4-.8L12 3.3Z" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinejoin="round"/>
                   </svg>
@@ -182,12 +165,10 @@ const App: FC = () => {
               </div>
             </div>
 
-            {/* Bot preview */}
             <aside className="bot-card" id="bot" aria-label="Telegram bot preview">
               <div className="bot-header">
                 <div className="bot-id">
                   <div className="bot-avatar" aria-hidden="true">
-                    {/* Bot icon */}
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <rect x="4" y="5" width="16" height="14" rx="3" stroke="white" strokeWidth="1.6" opacity="0.9"/>
                       <circle cx="9" cy="12" r="1.6" fill="white"/>
@@ -206,7 +187,6 @@ const App: FC = () => {
                 <div className="msg">
                   <div className="row">
                     <div className="pill">
-                      {/* Bolt */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M13 3L4 14h6l-1 7 9-11h-6l1-7Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
                       </svg>
@@ -226,14 +206,12 @@ const App: FC = () => {
                   </div>
                   <div className="row">
                     <span className="pill">
-                      {/* Activity */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M3 13h4l2-7 4 16 2-9h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                       Confidence: Medium
                     </span>
                     <span className="pill">
-                      {/* Gauge */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M4 14a8 8 0 1 1 16 0" stroke="currentColor" strokeWidth="1.6"/>
                         <path d="M12 14l4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
@@ -246,7 +224,6 @@ const App: FC = () => {
                 <div className="msg">
                   <div className="row">
                     <div className="pill">
-                      {/* Bell */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M18 10a6 6 0 1 0-12 0c0 4-2 5-2 5h16s-2-1-2-5Z" stroke="currentColor" strokeWidth="1.6"/>
                         <path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.6"/>
@@ -259,7 +236,6 @@ const App: FC = () => {
                   </div>
                   <div className="row">
                     <span className="pill">
-                      {/* Clock */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6"/>
                         <path d="M12 7v5l4 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
@@ -267,7 +243,6 @@ const App: FC = () => {
                       Real-time push
                     </span>
                     <span className="pill">
-                      {/* Shield check */}
                       <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 4l6 2.5V12a7.5 7.5 0 0 1-6 7.3A7.5 7.5 0 0 1 6 12V6.5L12 4Z" stroke="currentColor" strokeWidth="1.6"/>
                         <path d="M9.5 12.5l1.7 1.7 3.3-3.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -285,7 +260,6 @@ const App: FC = () => {
           <div className="container stack">
             <div className="card">
               <div className="section-title">
-                {/* Layers */}
                 <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="currentColor" strokeWidth="1.6"/>
                   <path d="M3 13l9 5 9-5" stroke="currentColor" strokeWidth="1.6" opacity=".8"/>
@@ -296,7 +270,6 @@ const App: FC = () => {
               <p className="kicker">Start in Telegram. Stay in flow. Syncrade’s bot surfaces opportunities and context in real time.</p>
               <div className="list">
                 <div className="li">
-                  {/* Check */}
                   <svg className="li-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M5 12l4 4 10-10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -328,7 +301,6 @@ const App: FC = () => {
 
             <div className="card">
               <div className="section-title">
-                {/* Shield */}
                 <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M12 3l7 3v5a9 9 0 0 1-7 8 9 9 0 0 1-7-8V6l7-3Z" stroke="currentColor" strokeWidth="1.6"/>
                 </svg>
@@ -384,7 +356,6 @@ const App: FC = () => {
           <div className="container">
             <div className="card" style={{ padding: '24px' }}>
               <div className="section-title">
-                {/* Link */}
                 <svg className="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M9 12a4 4 0 0 1 4-4h4a4 4 0 1 1 0 8h-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
                   <path d="M15 12a4 4 0 0 1-4 4H7a4 4 0 1 1 0-8h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
@@ -449,7 +420,6 @@ const App: FC = () => {
           <p style={{ margin: 0 }}>
             Risk disclaimer: Trading digital assets involves significant risk and can result in the loss of your capital. Nothing here is financial advice. Syncrade does not accept deposits; support is available via Telegram Stars only.
           </p>
-          {/* Dynamic year handled by JavaScript expression */}
           <p style={{ margin: '8px 0 0' }}>© {currentYear} Syncrade. All rights reserved.</p>
         </div>
       </footer>
