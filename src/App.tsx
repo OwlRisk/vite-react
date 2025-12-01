@@ -1,10 +1,10 @@
 import { useEffect, FC } from 'react';
 import './App.css';
 
-const App: FC = () => {
+// Using a slightly different style to define the component to rule out any definition oddities
+const App: FC = function() {
   const currentYear = new Date().getFullYear();
 
-  // Line 8: useEffect hook starts here
   useEffect(() => {
     const body = document.body;
     let raf: number | null = null; 
