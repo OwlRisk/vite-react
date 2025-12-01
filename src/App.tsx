@@ -1,4 +1,4 @@
-import { useEffect, FC } from 'react';
+﻿import { useEffect, FC } from 'react';
 
 // CSS content is now included as a string constant
 const AppStyles = `
