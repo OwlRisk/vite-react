@@ -32,12 +32,16 @@ html {
   color: var(--text);
   scroll-behavior: smooth;
   background-color: var(--bg-0);
+  /* Ensure HTML takes full viewport height */
+  height: 100%; 
 }
 
 body {
   /* Set initial background for systems with reduced motion */
   background: linear-gradient(180deg, var(--bg-0), var(--bg-2) 60%, var(--bg-1));
+  /* Use 100% height relative to html/viewport for full coverage */
   min-height: 100vh;
+  height: 100%; 
   position: relative;
   overflow-x: hidden;
   line-height: 1.6;
@@ -224,7 +228,7 @@ header {
   }
 }
 
-/* Hero Section - UPDATED TO 100VH AND ABSOLUTELY CENTERED CONTENT */
+/* Hero Section - Centered Content */
 .hero {
   /* Use strict height for perfect centering effect */
   height: 100vh; 
@@ -600,7 +604,6 @@ const App: FC = function() {
   const currentYear = new Date().getFullYear();
 
   // 1. useEffect for dynamically injecting CSS.
-  // This resolves the 'Could not resolve "./App.css"' error by combining the files.
   useEffect(() => {
     // Check if styles have already been injected to prevent duplication on re-render
     if (!document.getElementById('app-styles')) {
